@@ -1,4 +1,4 @@
-const { admin } = require("../utils/admin.js");
+const { admin, db } = require("../utils/admin.js");
 // Middleware
 exports.auth = (req, res, next) => {
   let idToken;
@@ -19,7 +19,9 @@ exports.auth = (req, res, next) => {
         .get();
     })
     .then((data) => {
-      req.user.handle = data.docs[0].data().handle;
+      let trueData = data.docs[0].data();
+      req.user.handle = trueData.handle;
+      req.user.imageUrl = trueData.imageUrl;
       return next();
     })
     .catch((err) => {
